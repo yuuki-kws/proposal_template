@@ -249,14 +249,14 @@ function buildDocument(d) {
     columnWidths: COL_WIDTHS,
     borders:      OUTER_B,
     rows: [
-      // 受付日 [2][7][3] = 12
-      tRow([ lc('受付日', 2), vc(recDate, 7), vc('（2020年度以降）', 3) ]),
+      // 企画書制作日 [2][7][3] = 12
+      tRow([ lc('企画書制作日', 2), vc(recDate, 7), vc('（2020年度以降）', 3) ]),
 
-      // 企画提出者名 | 上演希望年月 | 希望劇場 [2][4][2][2][1][1] = 12
+      // 企画提出者名 | 上演希望年月 | 希望劇場 [2][2][2][2][2][2] = 12
       tRow([
-        lc('企画\n提出者名', 2), vc(d.submitterName, 3),
-        lc('上演\n希望年月', 2), vc(perfYM, 2),
-        lc('希望\n劇場',   1), vc(d.theater, 2),
+        lc('企画提出者名', 2), vc(d.submitterName, 2),
+        lc('上演希望年月', 2), vc(perfYM, 2),
+        lc('希望劇場',    2), vc(d.theater, 2),
       ]),
 
       // 作品区分 [2][10] = 12
@@ -271,13 +271,13 @@ function buildDocument(d) {
       // 作者名 / 翻訳者 [2][4][2][4] = 12
       tRow([
         flc('作者名', 2), fvc(d.authorFuri, d.authorName, 4),
-        lc('（翻訳・脚色・翻案）\n者名', 2), vc(d.translator, 4),
+        lc('翻訳・脚色・翻案者名', 3), vc(d.translator, 3),
       ]),
 
       // 台本の有無 | 登場人物 [2][2][2][2][2][2] = 12
       tRow([
-        lc('台本の\n有無', 2), vc(scriptText, 2),
-        lc('登場人物\nの人数', 2),
+        lc('台本の有無', 2), vc(scriptText, 2),
+        lc('登場人物の人数', 2),
         vc(`男　${d.maleCast  || ' '}　名`, 2),
         vc(`女　${d.femaleCast || ' '}　名`, 2),
         vc(`合計　${d.totalCast || ' '}　名`, 2),
@@ -342,12 +342,12 @@ function buildDocument(d) {
       spacing:   { before: 80, after: 60 },
       children:  [mkRun('裏面に続く', { size: FSS })],
     }),
-    ...freeBox('■ 企画趣旨（推薦理由等）', d.proposalReason, 2600),
 
-    // Page break
+    // Page break → 裏面
     new Paragraph({ children: [new PageBreak()] }),
 
     // ─ Page 2: back side ─
+    ...freeBox('■ 企画趣旨（推薦理由等）', d.proposalReason, 2600),
     ...freeBox('■ 未翻訳又は書き下ろしの場合、いつ出来上がりますか？', d.completionDate, 2800),
     ...freeBox('■ 特記事項：希望する演出者・出演者があれば記入して下さい。', d.specialNotes, 3600),
 
