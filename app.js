@@ -77,7 +77,6 @@ function collectData() {
     femaleCast:       v('femaleCast'),
     totalCast:        v('totalCast'),
     perfTotalMinutes: v('perfTotalMinutes'),
-    perfActs:         v('perfActs'),
     perfRights:       radio('perfRights'),
     perfRightsOther:  v('perfRightsOther'),
     perfHistory:      v('perfHistory'),
@@ -216,8 +215,7 @@ function buildDocument(d) {
     : ph > 0 && pm > 0 ? `${ph}時間${pm}分`
     : ph > 0 ? `${ph}時間`
     : `${pm}分`;
-  const perfTimeText = perfTimeStr +
-    (d.perfActs ? `　（${d.perfActs}幕中場）` : '');
+  const perfTimeText = perfTimeStr;
 
   const chk = (sel, val) => sel === val ? '■' : '□';
 
@@ -247,7 +245,7 @@ function buildDocument(d) {
   }
 
   const infoTable = new Table({
-    width:        { size: TW, type: WidthType.DXA },
+    width:        { size: 5000, type: WidthType.PERCENTAGE },
     columnWidths: COL_WIDTHS,
     borders:      OUTER_B,
     rows: [
@@ -256,9 +254,9 @@ function buildDocument(d) {
 
       // 企画提出者名 | 上演希望年月 | 希望劇場 [2][4][2][2][1][1] = 12
       tRow([
-        lc('企画\n提出者名', 2), vc(d.submitterName, 4),
+        lc('企画\n提出者名', 2), vc(d.submitterName, 3),
         lc('上演\n希望年月', 2), vc(perfYM, 2),
-        lc('希望\n劇場',   1), vc(d.theater, 1),
+        lc('希望\n劇場',   1), vc(d.theater, 2),
       ]),
 
       // 作品区分 [2][10] = 12
@@ -307,7 +305,7 @@ function buildDocument(d) {
         children: [mkRun(heading, { bold: true })],
       }),
       new Table({
-        width:        { size: TW, type: WidthType.DXA },
+        width:        { size: 5000, type: WidthType.PERCENTAGE },
         columnWidths: [TW],
         borders:      BOX_B,
         rows: [
@@ -315,7 +313,7 @@ function buildDocument(d) {
             height: { value: minHeight, rule: HeightRule.AT_LEAST },
             children: [
               new TableCell({
-                width:   { size: TW, type: WidthType.DXA },
+                width:   { size: 5000, type: WidthType.PERCENTAGE },
                 margins: { top: 100, bottom: 100, left: 120, right: 120 },
                 children: cellParas,
               }),
