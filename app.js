@@ -150,7 +150,7 @@ function buildDocument(d) {
   const mkRun = (text, opts = {}) =>
     new TextRun({ text: text || ' ', font: FONT, size: opts.size || FS, ...opts });
 
-  const mkPara = (runs, align = AlignmentType.LEFT) =>
+  const mkPara = (runs, align = 'left') =>
     new Paragraph({
       alignment: align,
       spacing: { before: 0, after: 0 },
@@ -336,14 +336,14 @@ function buildDocument(d) {
   const children = [
     // Title（中央揃え）
     new Paragraph({
-      alignment: AlignmentType.CENTER,
+      alignment: 'center',
       spacing:   { before: 160, after: 60 },
       children:  [mkRun('企画書', { bold: true, size: FSL })],
     }),
 
     // 企画書制作日：テーブル外・右寄せ（希望劇場セル直上の位置）
     new Paragraph({
-      alignment: AlignmentType.RIGHT,
+      alignment: 'right',
       spacing:   { before: 0, after: 40 },
       children:  [mkRun(recDate, { size: FSS })],
     }),
@@ -354,7 +354,7 @@ function buildDocument(d) {
     ...freeBox('■ 上演歴', d.perfHistory, 2600),
     ...freeBox('■ 作者紹介・あらすじ等', d.authorIntro, 3200),
     new Paragraph({
-      alignment: AlignmentType.RIGHT,
+      alignment: 'right',
       spacing:   { before: 80, after: 60 },
       children:  [mkRun('裏面に続く', { size: FSS })],
     }),
