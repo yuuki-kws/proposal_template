@@ -22,11 +22,21 @@
         <div class="form-group">
           <label class="form-label">受付日</label>
           <div class="inline-group">
-            <input type="number" id="recYear" placeholder="年" min="2000" max="2100" class="input-year">
+            <select id="recYear" class="select-year">
+              <option value="">年</option>
+            </select>
             <span class="unit">年</span>
-            <input type="number" id="recMonth" placeholder="月" min="1" max="12" class="input-sm">
+            <select id="recMonth" class="select-sm">
+              <option value="">月</option>
+              <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+              <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+              <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+              <option value="10">10</option><option value="11">11</option><option value="12">12</option>
+            </select>
             <span class="unit">月</span>
-            <input type="number" id="recDay" placeholder="日" min="1" max="31" class="input-sm">
+            <select id="recDay" class="select-sm">
+              <option value="">日</option>
+            </select>
             <span class="unit">日</span>
           </div>
         </div>
@@ -39,7 +49,9 @@
         <div class="form-group">
           <label class="form-label">上演希望年</label>
           <div class="inline-group">
-            <input type="number" id="perfYear" placeholder="年" min="2000" max="2100" class="input-year">
+            <select id="perfYear" class="select-year">
+              <option value="">年</option>
+            </select>
             <span class="unit">年</span>
           </div>
         </div>
@@ -115,12 +127,12 @@
           <div class="cast-group">
             <div class="cast-row">
               <span class="cast-label">男</span>
-              <input type="number" id="maleCast" min="0" class="input-count">
+              <input type="number" id="maleCast" min="0" max="999" class="input-count">
               <span class="unit">名</span>
             </div>
             <div class="cast-row">
               <span class="cast-label">女</span>
-              <input type="number" id="femaleCast" min="0" class="input-count">
+              <input type="number" id="femaleCast" min="0" max="999" class="input-count">
               <span class="unit">名</span>
             </div>
             <div class="cast-row">
@@ -139,11 +151,17 @@
         <div class="form-group">
           <label class="form-label">上演予定時間</label>
           <div class="inline-group">
-            <input type="number" id="perfHours" min="0" class="input-count">
+            <select id="perfHours" class="select-sm">
+              <option value="">時間</option>
+            </select>
             <span class="unit">時間</span>
-            <input type="number" id="perfMinutes" min="0" max="59" class="input-count">
+            <select id="perfMinutes" class="select-sm">
+              <option value="">分</option>
+            </select>
             <span class="unit">分</span>
-            <input type="number" id="perfActs" min="0" class="input-count">
+            <select id="perfActs" class="select-sm">
+              <option value="">幕</option>
+            </select>
             <span class="unit">幕中場</span>
           </div>
         </div>
@@ -216,7 +234,7 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.js"></script>
+  <script src="vendor/docx.umd.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

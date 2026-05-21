@@ -1,3 +1,30 @@
+// ─── Select population ──────────────────────────────────────────────────────
+
+function populateSelect(id, values, labelFn) {
+  const sel = document.getElementById(id);
+  if (!sel) return;
+  values.forEach(v => {
+    const opt = document.createElement('option');
+    opt.value = v;
+    opt.textContent = labelFn ? labelFn(v) : v;
+    sel.appendChild(opt);
+  });
+}
+
+function range(start, end) {
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+}
+
+const currentYear = new Date().getFullYear();
+populateSelect('recYear',     range(currentYear - 5, currentYear + 15));
+populateSelect('perfYear',    range(currentYear,     currentYear + 20));
+populateSelect('recDay',      range(1, 31));
+populateSelect('perfHours',   range(0, 12));
+populateSelect('perfMinutes', range(0, 59), v => String(v).padStart(2, '0'));
+populateSelect('perfActs',    range(1, 10));
+
+// ─── Form logic ──────────────────────────────────────────────────────────────
+
 document.addEventListener('DOMContentLoaded', () => {
   // Auto-calculate total cast
   const maleCast = document.getElementById('maleCast');

@@ -116,7 +116,38 @@ body {
   color: var(--text-light);
 }
 
-/* Number inputs */
+/* Select boxes */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 10px center;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(74, 144, 217, 0.15);
+}
+
+.select-year {
+  width: 90px;
+  padding: 8px 30px 8px 8px;
+}
+
+.select-sm {
+  width: 72px;
+  padding: 8px 28px 8px 6px;
+  text-align: center;
+}
+
+/* Number inputs (cast counts remain numeric) */
 .input-year {
   width: 72px;
   padding: 8px 6px;
