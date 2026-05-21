@@ -260,26 +260,6 @@ function buildDocument(d) {
     columnWidths: COL_WIDTHS,
     borders:      OUTER_B,
     rows: [
-      // 企画書制作日：希望劇場の記入欄の直上、枠外・右寄せ
-      new TableRow({
-        children: [
-          new TableCell({
-            columnSpan: 10,
-            width:   { size: 10 * U, type: WidthType.DXA },
-            borders: { top: bNone, bottom: bNone, left: bNone, right: bNone },
-            margins: { top: 0, bottom: 0, left: 0, right: 0 },
-            children: [new Paragraph({ children: [] })],
-          }),
-          new TableCell({
-            columnSpan: 2,
-            width:   { size: 2 * U, type: WidthType.DXA },
-            borders: { top: bNone, bottom: bNone, left: bNone, right: bNone },
-            margins: { top: 30, bottom: 30, left: 60, right: 60 },
-            children: [mkPara(mkRun(recDate, { size: FSS }), AlignmentType.RIGHT)],
-          }),
-        ],
-      }),
-
       // 企画提出者名 | 上演希望年月 | 希望劇場 [2][2][2][2][2][2] = 12
       tRow([
         lc('企画提出者名', 2), vc(d.submitterName, 2),
@@ -302,11 +282,11 @@ function buildDocument(d) {
         flc('翻訳・脚色・翻案者名', 3), fvc(d.translatorFuri, d.translator, 3),
       ]),
 
-      // 台本の有無 | 登場人物 [2][3][2][5] = 12
+      // 台本の有無 | 登場人物 [2][4][2][4] = 12
       tRow([
-        lc('台本の有無', 2), vc(scriptText, 3),
+        lc('台本の有無', 2), vc(scriptText, 4),
         lc('登場人物の人数', 2),
-        vc(`男 ${d.maleCast || '-'}名　女 ${d.femaleCast || '-'}名　合計 ${d.totalCast || '-'}名`, 5),
+        vc(`男 ${d.maleCast || '-'}名　女 ${d.femaleCast || '-'}名　合計 ${d.totalCast || '-'}名`, 4),
       ]),
 
       // 上演予定時間 [2][10] = 12
@@ -354,10 +334,19 @@ function buildDocument(d) {
   // ── Assemble pages ────────────────────────────────────────────────────────
 
   const children = [
-    // Title
-    mkPara(mkRun('企画書', { bold: true, size: FSL }),
-           AlignmentType.CENTER),
-    new Paragraph({ spacing: { before: 0, after: 140 }, children: [] }),
+    // Title（中央揃え）
+    new Paragraph({
+      alignment: AlignmentType.CENTER,
+      spacing:   { before: 160, after: 60 },
+      children:  [mkRun('企画書', { bold: true, size: FSL })],
+    }),
+
+    // 企画書制作日：テーブル外・右寄せ（希望劇場セル直上の位置）
+    new Paragraph({
+      alignment: AlignmentType.RIGHT,
+      spacing:   { before: 0, after: 40 },
+      children:  [mkRun(recDate, { size: FSS })],
+    }),
 
     infoTable,
 
