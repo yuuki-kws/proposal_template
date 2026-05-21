@@ -1,0 +1,19 @@
+{
+  "name": "proposal_template",
+  "version": "1.0.0",
+  "description": "企画書生成アプリ",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://local_proxy@127.0.0.1:36471/git/yuuki-kws/proposal_template"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "docx": "^8.5.0"
+  }
+}
