@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>演劇公演企画書作成</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="app-header">
+      <h1>演劇公演企画書作成</h1>
+      <p>フォームに入力後、Wordファイルを生成してください。</p>
+    </header>
+
+    <form id="proposalForm" novalidate>
+
+      <!-- 基本情報 -->
+      <section class="form-section">
+        <h2 class="section-title">基本情報</h2>
+
+        <div class="form-group">
+          <label class="form-label">受付日</label>
+          <div class="inline-group">
+            <input type="number" id="recYear" placeholder="年" min="2000" max="2100" class="input-year">
+            <span class="unit">年</span>
+            <input type="number" id="recMonth" placeholder="月" min="1" max="12" class="input-sm">
+            <span class="unit">月</span>
+            <input type="number" id="recDay" placeholder="日" min="1" max="31" class="input-sm">
+            <span class="unit">日</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="submitterName" class="form-label">企画提出者名</label>
+          <input type="text" id="submitterName" class="input-text">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">上演希望年</label>
+          <div class="inline-group">
+            <input type="number" id="perfYear" placeholder="年" min="2000" max="2100" class="input-year">
+            <span class="unit">年</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="theater" class="form-label">希望劇場</label>
+          <input type="text" id="theater" class="input-text">
+        </div>
+      </section>
+
+      <!-- 作品情報 -->
+      <section class="form-section">
+        <h2 class="section-title">作品情報</h2>
+
+        <div class="form-group">
+          <label class="form-label">作品区分</label>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input type="radio" name="workType" value="書き下ろし作品">
+              <span>書き下ろし作品</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="workType" value="海外の既存作品">
+              <span>海外の既存作品</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">作品名</label>
+          <input type="text" id="workNameFuri" placeholder="ふりがな" class="input-text input-furi">
+          <input type="text" id="workName" placeholder="作品名" class="input-text">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">原作名</label>
+          <input type="text" id="origNameFuri" placeholder="ふりがな" class="input-text input-furi">
+          <input type="text" id="origName" placeholder="原作名" class="input-text">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">作者名</label>
+          <input type="text" id="authorFuri" placeholder="ふりがな" class="input-text input-furi">
+          <input type="text" id="authorName" placeholder="作者名" class="input-text">
+        </div>
+
+        <div class="form-group">
+          <label for="translator" class="form-label">翻訳・脚色・翻案者</label>
+          <input type="text" id="translator" class="input-text">
+        </div>
+      </section>
+
+      <!-- 台本・出演情報 -->
+      <section class="form-section">
+        <h2 class="section-title">台本・出演情報</h2>
+
+        <div class="form-group">
+          <label class="form-label">台本の有無</label>
+          <div class="radio-group radio-row">
+            <label class="radio-label">
+              <input type="radio" name="scriptAvail" value="有">
+              <span>有</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="scriptAvail" value="無">
+              <span>無</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">登場人物</label>
+          <div class="cast-group">
+            <div class="cast-row">
+              <span class="cast-label">男</span>
+              <input type="number" id="maleCast" min="0" class="input-count">
+              <span class="unit">名</span>
+            </div>
+            <div class="cast-row">
+              <span class="cast-label">女</span>
+              <input type="number" id="femaleCast" min="0" class="input-count">
+              <span class="unit">名</span>
+            </div>
+            <div class="cast-row">
+              <span class="cast-label">合計</span>
+              <input type="number" id="totalCast" min="0" class="input-count" readonly>
+              <span class="unit">名</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 上演情報 -->
+      <section class="form-section">
+        <h2 class="section-title">上演情報</h2>
+
+        <div class="form-group">
+          <label class="form-label">上演予定時間</label>
+          <div class="inline-group">
+            <input type="number" id="perfHours" min="0" class="input-count">
+            <span class="unit">時間</span>
+            <input type="number" id="perfMinutes" min="0" max="59" class="input-count">
+            <span class="unit">分</span>
+            <input type="number" id="perfActs" min="0" class="input-count">
+            <span class="unit">幕中場</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">上演権</label>
+          <div class="radio-group">
+            <label class="radio-label"><input type="radio" name="perfRights" value="取得済み"><span>取得済み</span></label>
+            <label class="radio-label"><input type="radio" name="perfRights" value="調査済み"><span>調査済み</span></label>
+            <label class="radio-label"><input type="radio" name="perfRights" value="請査中"><span>請査中</span></label>
+            <label class="radio-label"><input type="radio" name="perfRights" value="未調査"><span>未調査</span></label>
+            <label class="radio-label">
+              <input type="radio" name="perfRights" value="その他">
+              <span>その他</span>
+              <input type="text" id="perfRightsOther" class="input-inline" placeholder="内容を入力" disabled>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- 記述欄 -->
+      <section class="form-section">
+        <h2 class="section-title">記述欄</h2>
+
+        <div class="form-group">
+          <label for="perfHistory" class="form-label">■ 上演歴</label>
+          <textarea id="perfHistory" rows="5" class="textarea"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="authorIntro" class="form-label">■ 作者紹介・あらすじ等</label>
+          <textarea id="authorIntro" rows="8" class="textarea"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="proposalReason" class="form-label">■ 企画趣旨（推薦理由等）</label>
+          <textarea id="proposalReason" rows="8" class="textarea"></textarea>
+        </div>
+      </section>
+
+      <!-- 裏面 -->
+      <section class="form-section">
+        <h2 class="section-title">裏面</h2>
+
+        <div class="form-group">
+          <label for="completionDate" class="form-label">■ 未翻訳又は書き下ろしの場合、いつ出来上がりますか？</label>
+          <textarea id="completionDate" rows="4" class="textarea"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="specialNotes" class="form-label">■ 特記事項</label>
+          <p class="field-hint">希望する演出者・出演者があれば記入して下さい。</p>
+          <textarea id="specialNotes" rows="6" class="textarea"></textarea>
+        </div>
+      </section>
+
+    </form>
+
+    <div class="action-area">
+      <button id="generateBtn" class="btn-generate">Word ファイルを生成・ダウンロード</button>
+    </div>
+
+    <div class="notes-section">
+      <h3>注記</h3>
+      <ol>
+        <li>企画作品の原本コピーを添えて提出して下さい。</li>
+        <li>未翻訳の作品は、粗訳又は粗筋を添えて提出して下さい。</li>
+        <li>企画提出に至れない場合は、別紙を添付して下さい。</li>
+      </ol>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
