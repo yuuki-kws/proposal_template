@@ -150,6 +150,10 @@ select:focus {
   width: 78px;
 }
 
+.select-time {
+  min-width: 180px;
+}
+
 .input-count {
   width: 64px;
   padding: 8px 4px;

@@ -113,12 +113,28 @@
           <div class="cast-group">
             <div class="cast-row">
               <span class="cast-label">男</span>
-              <input type="number" id="maleCast" min="0" max="999" class="input-count">
+              <select id="maleCast" class="select-sm">
+                <option value="">-</option>
+                <option value="0">0</option><option value="1">1</option><option value="2">2</option>
+                <option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                <option value="6">6</option><option value="7">7</option><option value="8">8</option>
+                <option value="9">9</option><option value="10">10</option><option value="11">11</option>
+                <option value="12">12</option><option value="13">13</option><option value="14">14</option>
+                <option value="15">15</option>
+              </select>
               <span class="unit">名</span>
             </div>
             <div class="cast-row">
               <span class="cast-label">女</span>
-              <input type="number" id="femaleCast" min="0" max="999" class="input-count">
+              <select id="femaleCast" class="select-sm">
+                <option value="">-</option>
+                <option value="0">0</option><option value="1">1</option><option value="2">2</option>
+                <option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                <option value="6">6</option><option value="7">7</option><option value="8">8</option>
+                <option value="9">9</option><option value="10">10</option><option value="11">11</option>
+                <option value="12">12</option><option value="13">13</option><option value="14">14</option>
+                <option value="15">15</option>
+              </select>
               <span class="unit">名</span>
             </div>
             <div class="cast-row">
@@ -136,21 +152,10 @@
 
         <div class="form-group">
           <label class="form-label">上演予定時間</label>
+          <p class="field-hint">分で入力（ファイル出力時に時間・分に自動換算）</p>
           <div class="inline-group">
-            <select id="perfHours" class="select-sm">
-              <option value="">-</option>
-              <option value="0">0</option><option value="1">1</option><option value="2">2</option>
-              <option value="3">3</option><option value="4">4</option><option value="5">5</option>
-              <option value="6">6</option><option value="7">7</option><option value="8">8</option>
-              <option value="9">9</option><option value="10">10</option>
-            </select>
-            <span class="unit">時間</span>
-            <select id="perfMinutes" class="select-sm">
-              <option value="">-</option>
-              <option value="0">00</option><option value="5">05</option><option value="10">10</option>
-              <option value="15">15</option><option value="20">20</option><option value="25">25</option>
-              <option value="30">30</option><option value="35">35</option><option value="40">40</option>
-              <option value="45">45</option><option value="50">50</option><option value="55">55</option>
+            <select id="perfTotalMinutes" class="select-time">
+              <option value="">選択してください</option>
             </select>
             <span class="unit">分</span>
             <select id="perfActs" class="select-sm">
