@@ -57,11 +57,15 @@
           <div class="radio-group">
             <label class="radio-label">
               <input type="radio" name="workType" value="書き下ろし作品">
-              <span>書き下ろし作品</span>
+              <span>1 書き下ろし作品</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="workType" value="既成台本（日本）">
+              <span>2 既成台本（日本）</span>
             </label>
             <label class="radio-label">
               <input type="radio" name="workType" value="海外の既存作品">
-              <span>海外の既存作品</span>
+              <span>3 海外の既存作品</span>
             </label>
           </div>
         </div>
@@ -86,7 +90,8 @@
 
         <div class="form-group">
           <label for="translator" class="form-label">翻訳・脚色・翻案者</label>
-          <input type="text" id="translator" class="input-text">
+          <input type="text" id="translatorFuri" placeholder="ふりがな" class="input-text input-furi">
+          <input type="text" id="translator" placeholder="翻訳・脚色・翻案者名" class="input-text">
         </div>
       </section>
 

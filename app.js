@@ -71,6 +71,7 @@ function collectData() {
     origName:         v('origName'),
     authorFuri:       v('authorFuri'),
     authorName:       v('authorName'),
+    translatorFuri:   v('translatorFuri'),
     translator:       v('translator'),
     scriptAvail:      radio('scriptAvail'),
     maleCast:         v('maleCast'),
@@ -197,6 +198,15 @@ function buildDocument(d) {
       mkPara(mkRun(name || ' ')),
     ], span);
 
+  // Narrow-margin value cell for compact fields (登場人物 counts)
+  const nvc = (text, span) =>
+    new TableCell({
+      columnSpan: span,
+      width:   { size: span * U, type: WidthType.DXA },
+      margins: { top: 50, bottom: 50, left: 60, right: 60 },
+      children: (text || '').split('\n').map(l => mkPara(mkRun(l || ' '))),
+    });
+
   // ── Format values ─────────────────────────────────────────────────────────
 
   const today   = new Date();
@@ -221,10 +231,11 @@ function buildDocument(d) {
 
   const workTypeText =
     `${chk(d.workType, '書き下ろし作品')} 1. 書き下ろし作品　　` +
-    `${chk(d.workType, '海外の既存作品')} 2. 海外の既存作品`;
+    `${chk(d.workType, '既成台本（日本）')} 2. 既成台本（日本）　　` +
+    `${chk(d.workType, '海外の既存作品')} 3. 海外の既存作品`;
 
   const scriptText =
-    `${chk(d.scriptAvail, '有')} 1. 有\n${chk(d.scriptAvail, '無')} 2. 無`;
+    `${chk(d.scriptAvail, '有')} 1. 有　　${chk(d.scriptAvail, '無')} 2. 無`;
 
   const rOpts = ['取得済み', '調査済み', '請査中', '未調査'];
   const rightsLine1 = rOpts.map((o, i) => `${chk(d.perfRights, o)} ${i + 1}. ${o}`).join('　');
@@ -249,9 +260,6 @@ function buildDocument(d) {
     columnWidths: COL_WIDTHS,
     borders:      OUTER_B,
     rows: [
-      // 企画書制作日 [2][7][3] = 12
-      tRow([ lc('企画書制作日', 2), vc(recDate, 7), vc('（2020年度以降）', 3) ]),
-
       // 企画提出者名 | 上演希望年月 | 希望劇場 [2][2][2][2][2][2] = 12
       tRow([
         lc('企画提出者名', 2), vc(d.submitterName, 2),
@@ -271,16 +279,16 @@ function buildDocument(d) {
       // 作者名 / 翻訳者 [2][4][2][4] = 12
       tRow([
         flc('作者名', 2), fvc(d.authorFuri, d.authorName, 4),
-        lc('翻訳・脚色・翻案者名', 3), vc(d.translator, 3),
+        flc('翻訳・脚色・翻案者名', 3), fvc(d.translatorFuri, d.translator, 3),
       ]),
 
-      // 台本の有無 | 登場人物 [2][2][2][2][2][2] = 12
+      // 台本の有無 | 登場人物 [2][3][2][2][1][2] = 12
       tRow([
-        lc('台本の有無', 2), vc(scriptText, 2),
+        lc('台本の有無', 2), vc(scriptText, 3),
         lc('登場人物の人数', 2),
-        vc(`男　${d.maleCast  || ' '}　名`, 2),
-        vc(`女　${d.femaleCast || ' '}　名`, 2),
-        vc(`合計　${d.totalCast || ' '}　名`, 2),
+        nvc(`男 ${d.maleCast  || '-'}名`, 2),
+        nvc(`女 ${d.femaleCast || '-'}名`, 1),
+        nvc(`合計 ${d.totalCast || '-'}名`, 2),
       ]),
 
       // 上演予定時間 [2][10] = 12
@@ -327,6 +335,9 @@ function buildDocument(d) {
   // ── Assemble pages ────────────────────────────────────────────────────────
 
   const children = [
+    // 企画書制作日：欄外・ページ最上部・右寄せ
+    mkPara(mkRun(recDate, { size: FSS }), AlignmentType.RIGHT),
+
     // Title
     mkPara(mkRun('企画提出書（本公演）', { bold: true, size: FSL }),
            AlignmentType.CENTER),
@@ -350,19 +361,6 @@ function buildDocument(d) {
     ...freeBox('■ 企画趣旨（推薦理由等）', d.proposalReason, 2600),
     ...freeBox('■ 未翻訳又は書き下ろしの場合、いつ出来上がりますか？', d.completionDate, 2800),
     ...freeBox('■ 特記事項：希望する演出者・出演者があれば記入して下さい。', d.specialNotes, 3600),
-
-    // 注記
-    new Paragraph({
-      spacing: { before: 180, after: 60 },
-      children: [mkRun('注', { bold: true })],
-    }),
-    ...[
-      '１．企画作品の原本コピーを添えて提出して下さい。',
-      '２．未翻訳の作品は、粗訳又は粗筋を添えて提出して下さい。',
-      '３．企画提出書に書ききれない場合は、別紙を添付して下さい。',
-    ].map(t =>
-      new Paragraph({ spacing: { before: 0, after: 0 }, children: [mkRun(t, { size: FSS })] })
-    ),
 
     // 検討結果（blank – theater use）
     ...freeBox('■ 検討結果（検討日　　　年　　月　　日）', '', 2800),
