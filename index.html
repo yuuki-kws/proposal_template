@@ -20,13 +20,18 @@
         <h2 class="section-title">基本情報</h2>
 
         <div class="form-group">
-          <label class="form-label">受付日</label>
+          <label for="submitterName" class="form-label">企画提出者名</label>
+          <input type="text" id="submitterName" class="input-text">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">上演希望年月</label>
           <div class="inline-group">
-            <select id="recYear" class="select-year">
-              <option value="">年</option>
+            <select id="perfYear" class="select-year">
+              <option value="">年を選択</option>
             </select>
             <span class="unit">年</span>
-            <select id="recMonth" class="select-sm">
+            <select id="perfMonth" class="select-sm">
               <option value="">月</option>
               <option value="1">1</option><option value="2">2</option><option value="3">3</option>
               <option value="4">4</option><option value="5">5</option><option value="6">6</option>
@@ -34,25 +39,6 @@
               <option value="10">10</option><option value="11">11</option><option value="12">12</option>
             </select>
             <span class="unit">月</span>
-            <select id="recDay" class="select-sm">
-              <option value="">日</option>
-            </select>
-            <span class="unit">日</span>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="submitterName" class="form-label">企画提出者名</label>
-          <input type="text" id="submitterName" class="input-text">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">上演希望年</label>
-          <div class="inline-group">
-            <select id="perfYear" class="select-year">
-              <option value="">年</option>
-            </select>
-            <span class="unit">年</span>
           </div>
         </div>
 
@@ -152,15 +138,27 @@
           <label class="form-label">上演予定時間</label>
           <div class="inline-group">
             <select id="perfHours" class="select-sm">
-              <option value="">時間</option>
+              <option value="">-</option>
+              <option value="0">0</option><option value="1">1</option><option value="2">2</option>
+              <option value="3">3</option><option value="4">4</option><option value="5">5</option>
+              <option value="6">6</option><option value="7">7</option><option value="8">8</option>
+              <option value="9">9</option><option value="10">10</option>
             </select>
             <span class="unit">時間</span>
             <select id="perfMinutes" class="select-sm">
-              <option value="">分</option>
+              <option value="">-</option>
+              <option value="0">00</option><option value="5">05</option><option value="10">10</option>
+              <option value="15">15</option><option value="20">20</option><option value="25">25</option>
+              <option value="30">30</option><option value="35">35</option><option value="40">40</option>
+              <option value="45">45</option><option value="50">50</option><option value="55">55</option>
             </select>
             <span class="unit">分</span>
             <select id="perfActs" class="select-sm">
-              <option value="">幕</option>
+              <option value="">-</option>
+              <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+              <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+              <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+              <option value="10">10</option>
             </select>
             <span class="unit">幕中場</span>
           </div>

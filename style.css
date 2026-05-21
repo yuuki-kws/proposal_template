@@ -116,18 +116,24 @@ body {
   color: var(--text-light);
 }
 
-/* Select boxes */
+/* Select boxes — match input-text styling */
 select {
   appearance: none;
   -webkit-appearance: none;
-  background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 10px center;
+  background-color: var(--white);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 11px;
   border: 1px solid var(--border);
   border-radius: 4px;
   font-size: 1rem;
   font-family: inherit;
   color: var(--text);
   cursor: pointer;
-  transition: border-color 0.2s;
+  padding: 8px 32px 8px 10px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-tap-highlight-color: transparent;
 }
 
 select:focus {
@@ -137,37 +143,11 @@ select:focus {
 }
 
 .select-year {
-  width: 90px;
-  padding: 8px 30px 8px 8px;
+  width: 110px;
 }
 
 .select-sm {
-  width: 72px;
-  padding: 8px 28px 8px 6px;
-  text-align: center;
-}
-
-/* Number inputs (cast counts remain numeric) */
-.input-year {
-  width: 72px;
-  padding: 8px 6px;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  font-size: 1rem;
-  font-family: inherit;
-  text-align: center;
-  color: var(--text);
-}
-
-.input-sm {
-  width: 54px;
-  padding: 8px 4px;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  font-size: 1rem;
-  font-family: inherit;
-  text-align: center;
-  color: var(--text);
+  width: 78px;
 }
 
 .input-count {

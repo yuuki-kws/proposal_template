@@ -1,31 +1,16 @@
-// ─── Select population ──────────────────────────────────────────────────────
+// ─── Initialization ──────────────────────────────────────────────────────────
 
-function populateSelect(id, values, labelFn) {
-  const sel = document.getElementById(id);
-  if (!sel) return;
-  values.forEach(v => {
+function init() {
+  // Populate year select dynamically (always shows current year onwards)
+  const currentYear = new Date().getFullYear();
+  const perfYearSel = document.getElementById('perfYear');
+  for (let y = currentYear; y <= currentYear + 15; y++) {
     const opt = document.createElement('option');
-    opt.value = v;
-    opt.textContent = labelFn ? labelFn(v) : v;
-    sel.appendChild(opt);
-  });
-}
+    opt.value = y;
+    opt.textContent = y;
+    perfYearSel.appendChild(opt);
+  }
 
-function range(start, end) {
-  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-}
-
-const currentYear = new Date().getFullYear();
-populateSelect('recYear',     range(currentYear - 5, currentYear + 15));
-populateSelect('perfYear',    range(currentYear,     currentYear + 20));
-populateSelect('recDay',      range(1, 31));
-populateSelect('perfHours',   range(0, 12));
-populateSelect('perfMinutes', range(0, 59), v => String(v).padStart(2, '0'));
-populateSelect('perfActs',    range(1, 10));
-
-// ─── Form logic ──────────────────────────────────────────────────────────────
-
-document.addEventListener('DOMContentLoaded', () => {
   // Auto-calculate total cast
   const maleCast = document.getElementById('maleCast');
   const femaleCast = document.getElementById('femaleCast');
@@ -49,18 +34,25 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.getElementById('generateBtn').addEventListener('click', generateWord);
-});
+}
+
+// Run after DOM is ready (scripts are at bottom of body, but guard both cases)
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+// ─── Data collection ─────────────────────────────────────────────────────────
 
 function collectData() {
   const v = id => (document.getElementById(id)?.value || '').trim();
   const radio = name => document.querySelector(`input[name="${name}"]:checked`)?.value || '';
 
   return {
-    recYear: v('recYear'),
-    recMonth: v('recMonth'),
-    recDay: v('recDay'),
     submitterName: v('submitterName'),
     perfYear: v('perfYear'),
+    perfMonth: v('perfMonth'),
     theater: v('theater'),
     workType: radio('workType'),
     workNameFuri: v('workNameFuri'),
@@ -86,6 +78,8 @@ function collectData() {
     specialNotes: v('specialNotes'),
   };
 }
+
+// ─── Word generation ─────────────────────────────────────────────────────────
 
 async function generateWord() {
   const btn = document.getElementById('generateBtn');
@@ -126,11 +120,10 @@ function buildDocument(d) {
     AlignmentType, BorderStyle, WidthType, ShadingType, PageBreak,
   } = docx;
 
-  const LABEL_WIDTH = 2800; // twips
-  const FONT_SIZE = 20;     // half-points = 10pt
+  const LABEL_WIDTH = 2800;
+  const FONT_SIZE = 20;
   const FONT_SIZE_SM = 18;
 
-  // ── Border presets ──────────────────────────────────────────────────────
   const borderThin = { style: BorderStyle.SINGLE, size: 1, color: 'AAAAAA' };
   const borderMid  = { style: BorderStyle.SINGLE, size: 4, color: '2C5F8A' };
   const borderNone = { style: BorderStyle.NONE,   size: 0, color: 'FFFFFF' };
@@ -145,8 +138,6 @@ function buildDocument(d) {
     insideH: borderNone, insideV: borderNone,
   };
 
-  // ── Helpers ─────────────────────────────────────────────────────────────
-
   function run(text, opts = {}) {
     return new TextRun({ text, size: FONT_SIZE, font: 'メイリオ', ...opts });
   }
@@ -155,7 +146,6 @@ function buildDocument(d) {
     return new Paragraph({ children: Array.isArray(children) ? children : [children], ...opts });
   }
 
-  // Row: section header (full-width, dark background)
   function sectionRow(title) {
     return new TableRow({
       children: [
@@ -163,13 +153,12 @@ function buildDocument(d) {
           columnSpan: 2,
           shading: { type: ShadingType.CLEAR, fill: '2C5F8A', color: 'auto' },
           margins: { top: 60, bottom: 60, left: 100, right: 100 },
-          children: [para(run(title, { bold: true, color: 'FFFFFF', size: FONT_SIZE }))],
+          children: [para(run(title, { bold: true, color: 'FFFFFF' }))],
         }),
       ],
     });
   }
 
-  // Row: label + value
   function infoRow(label, value) {
     return new TableRow({
       children: [
@@ -187,20 +176,17 @@ function buildDocument(d) {
     });
   }
 
-  // Checkbox representation: ■ selected  □ unselected
   function checkboxLine(options, selected) {
     return options.map(opt => (opt === selected ? '■ ' : '□ ') + opt).join('　');
   }
 
-  // Multi-line text in a bordered box
   function freeTextBlock(heading, text) {
-    const lines = (text || '').split('\n');
-    const cellChildren = lines.length > 0 && text
-      ? lines.map(line => para(run(line || ' ', { size: FONT_SIZE }), { spacing: { after: 40 } }))
+    const cellChildren = text
+      ? text.split('\n').map(line => para(run(line || ' '), { spacing: { after: 40 } }))
       : [para(run('　'))];
 
     return [
-      para(run(heading, { bold: true, size: FONT_SIZE }), { spacing: { before: 180, after: 80 } }),
+      para(run(heading, { bold: true }), { spacing: { before: 180, after: 80 } }),
       new Table({
         width: { size: 100, type: WidthType.PERCENTAGE },
         borders: boxBorders,
@@ -218,15 +204,18 @@ function buildDocument(d) {
     ];
   }
 
-  // ── Format values ────────────────────────────────────────────────────────
+  // Auto-generate today's date for 受付日
+  const today = new Date();
+  const recDate = `${today.getFullYear()}年　${today.getMonth() + 1}月　${today.getDate()}日`;
 
-  const recDate = (d.recYear || d.recMonth || d.recDay)
-    ? `${d.recYear || '　　'}年　${d.recMonth || '　'}月　${d.recDay || '　'}日`
-    : '';
+  const perfYearMonth = [
+    d.perfYear ? `${d.perfYear}年` : '',
+    d.perfMonth ? `${d.perfMonth}月` : '',
+  ].filter(Boolean).join('　');
 
   const perfTime = [
-    d.perfHours ? `${d.perfHours}時間` : '',
-    d.perfMinutes ? `${d.perfMinutes}分` : '',
+    d.perfHours !== '' ? `${d.perfHours}時間` : '',
+    d.perfMinutes !== '' ? `${d.perfMinutes}分` : '',
     d.perfActs ? `（${d.perfActs}幕中場）` : '',
   ].filter(Boolean).join('　');
 
@@ -240,8 +229,6 @@ function buildDocument(d) {
     `合計　${d.totalCast || '　'}名`,
   ].join('　　');
 
-  // ── Main info table ──────────────────────────────────────────────────────
-
   const mainTable = new Table({
     width: { size: 100, type: WidthType.PERCENTAGE },
     borders: tableBorders,
@@ -249,7 +236,7 @@ function buildDocument(d) {
       sectionRow('基本情報'),
       infoRow('受付日', recDate),
       infoRow('企画提出者名', d.submitterName),
-      infoRow('上演希望年', d.perfYear ? `${d.perfYear}年` : ''),
+      infoRow('上演希望年月', perfYearMonth),
       infoRow('希望劇場', d.theater),
 
       sectionRow('作品情報'),
@@ -272,29 +259,21 @@ function buildDocument(d) {
     ],
   });
 
-  // ── Divider ──────────────────────────────────────────────────────────────
-
   const divider = new Paragraph({
     border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: 'BBBBBB', space: 4 } },
     spacing: { before: 160, after: 160 },
     children: [],
   });
 
-  // ── Document children ────────────────────────────────────────────────────
-
   const children = [
-    // Title
     para(run('企　画　書', { bold: true, size: 36 }), {
       alignment: AlignmentType.CENTER,
       spacing: { before: 0, after: 240 },
     }),
 
-    // Main table
     mainTable,
-
     divider,
 
-    // 記述欄 heading
     para(run('記述欄', { bold: true, size: 24, color: '2C5F8A' }), {
       spacing: { before: 0, after: 100 },
     }),
@@ -308,10 +287,8 @@ function buildDocument(d) {
       spacing: { before: 120, after: 0 },
     }),
 
-    // Page break
     para(new PageBreak()),
 
-    // 裏面 title
     para(run('企　画　書（裏面）', { bold: true, size: 32 }), {
       alignment: AlignmentType.CENTER,
       spacing: { before: 0, after: 200 },
@@ -322,7 +299,6 @@ function buildDocument(d) {
 
     divider,
 
-    // 注記
     para(run('注記', { bold: true, size: FONT_SIZE }), { spacing: { before: 0, after: 80 } }),
     para(run('１．企画作品の原本コピーを添えて提出して下さい。', { size: FONT_SIZE_SM })),
     para(run('２．未翻訳の作品は、粗訳又は粗筋を添えて提出して下さい。', { size: FONT_SIZE_SM })),
@@ -332,9 +308,7 @@ function buildDocument(d) {
   return new Document({
     sections: [{
       properties: {
-        page: {
-          margin: { top: 720, bottom: 720, left: 1080, right: 1080 },
-        },
+        page: { margin: { top: 720, bottom: 720, left: 1080, right: 1080 } },
       },
       children,
     }],
