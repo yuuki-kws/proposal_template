@@ -10,15 +10,19 @@ function init() {
     perfYearSel.appendChild(opt);
   }
 
-  // Total-minutes select (5-min increments, 0–360 min)
+  // Total-minutes select: 0-60 @5min, 60-120 @10min, 120-240 @30min
   const perfMinSel = document.getElementById('perfTotalMinutes');
-  for (let m = 0; m <= 360; m += 5) {
+  const perfMinSteps = [];
+  for (let m = 0;   m <= 60;  m += 5)  perfMinSteps.push(m);
+  for (let m = 70;  m <= 120; m += 10) perfMinSteps.push(m);
+  for (let m = 150; m <= 240; m += 30) perfMinSteps.push(m);
+  for (const m of perfMinSteps) {
     const h = Math.floor(m / 60), r = m % 60;
     let label;
-    if (m === 0) label = '0分';
-    else if (h === 0)  label = `${m}分`;
-    else if (r === 0)  label = `${m}分（${h}時間）`;
-    else               label = `${m}分（${h}時間${r}分）`;
+    if (m === 0)         label = '0分';
+    else if (h === 0)    label = `${m}分`;
+    else if (r === 0)    label = `${m}分（${h}時間）`;
+    else                 label = `${m}分（${h}時間${r}分）`;
     const opt = document.createElement('option');
     opt.value = m; opt.textContent = label;
     perfMinSel.appendChild(opt);
