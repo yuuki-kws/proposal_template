@@ -97,7 +97,11 @@ async function generateWord() {
     const data = collectData();
     const blob = await docx.Packer.toBlob(buildDocument(data));
     const safe = (data.workName || '無題').replace(/[/\\?%*:|"<>]/g, '_');
-    downloadBlob(blob, `企画書_${safe}.docx`);
+    const now  = new Date();
+    const dd   = String(now.getFullYear()) +
+                 String(now.getMonth() + 1).padStart(2, '0') +
+                 String(now.getDate()).padStart(2, '0');
+    downloadBlob(blob, `公演企画書_${safe}_${dd}.docx`);
   } catch (err) {
     console.error(err);
     alert('Wordファイルの生成中にエラーが発生しました。\n' + err.message);
